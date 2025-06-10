@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { firstValueFrom } from 'rxjs';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
-import { RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-pokemon-list',
@@ -18,7 +18,11 @@ export class PokemonListComponent implements OnInit {
   limit = 0;
   offset = 0;
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {}
 
   getTypes() {
     return this.http.get(`https://pokeapi.co/api/v2/type`);
@@ -82,11 +86,25 @@ export class PokemonListComponent implements OnInit {
     this.limit = pageEvent.pageSize;
     this.currentPage = pageEvent.pageIndex;
     this.offset = pageEvent.pageIndex * pageEvent.pageSize;
+
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {
+        limit: this.limit,
+        page: this.currentPage,
+      },
+    });
+
     await this.getPokemonInfo(this.limit, this.offset);
     window.scrollTo(0, 0);
   }
 
   async ngOnInit(): Promise<void> {
-    this.getPokemonInfo();
+    this.route.queryParams.subscribe(async (params) => {
+      this.limit = +params['limit'] || 12;
+      this.currentPage = +params['page'] || 0;
+      this.offset = this.currentPage * this.limit;
+      await this.getPokemonInfo(this.limit, this.offset);
+    });
   }
 }
