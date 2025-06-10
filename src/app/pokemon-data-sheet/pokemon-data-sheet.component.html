@@ -1,0 +1,43 @@
+<div class="navigator">
+  @if (pokemonId - 1 > 0) {<a
+    class="previous"
+    [routerLink]="['/pokemon', previousPokemon.id]"
+    ><img class="sprite" [src]="previousPokemon.sprites.front_default"
+  /></a>
+
+  }
+  <a class="current" [routerLink]="['/pokemon', pokemonId]"
+    ><img class="sprite" [src]="pokemonVarieties[0].sprites.front_default"
+  /></a>
+  @if (pokemonId + 1 < 1026) {<a
+    class="next"
+    [routerLink]="['/pokemon', nextPokemon.id]"
+    ><img class="sprite" [src]="nextPokemon.sprites.front_default" /></a
+  >}
+</div>
+<div class="box">
+  <h1>#{{ pokemonId }}</h1>
+  <h1>{{ pokemonVarieties[0].species.name | titlecase }}</h1>
+  @for (variety of pokemonVarieties; track variety) {
+  <img
+    [src]="variety.sprites.other['official-artwork'].front_default"
+    alt="pokemon"
+  />
+  }
+
+  <div class="type">
+    HH
+    <img
+      *ngFor="let type of pokemonVarieties[0].types"
+      [src]="getTypeSprite(type.type.name)"
+      alt="type.type.name"
+    />
+  </div>
+</div>
+<p>coucou {{ latestCry }}</p>
+<audio key="latestCry" controls>
+  <source [src]="latestCry" type="audio/ogg" />
+</audio>
+<audio controls>
+  <source [src]="legacyCry" type="audio/ogg" />
+</audio>

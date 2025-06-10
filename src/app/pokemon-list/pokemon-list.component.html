@@ -11,10 +11,11 @@
 <div class="pokemon-list">
   <div class="box" *ngFor="let pokemon of pokemons">
     <h1>#{{ pokemon.id }}</h1>
-    <img
-      [src]="pokemon.sprites.other['official-artwork'].front_default"
-      alt="pokemon"
-    />
+    <a [routerLink]="['/pokemon', pokemon.id]"
+      ><img
+        [src]="pokemon.sprites.other['official-artwork'].front_default"
+        alt="pokemon"
+    /></a>
 
     <h1>{{ pokemon.species_name | titlecase }}</h1>
     <div class="type">
