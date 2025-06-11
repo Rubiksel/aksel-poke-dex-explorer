@@ -6,4 +6,5 @@ import { PokemonDataSheetComponent } from './pokemon-data-sheet/pokemon-data-she
 export const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'pokemons', component: PokemonListComponent },
+  { path: 'pokemon/:id', component: PokemonDataSheetComponent },
 ];

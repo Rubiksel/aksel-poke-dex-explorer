@@ -1,20 +1,68 @@
 <div class="navigator">
-  @if (pokemonId - 1 > 0) {<a
+  @if (previousPokemon) {<a
     class="previous"
     [routerLink]="['/pokemon', previousPokemon.id]"
     ><img class="sprite" [src]="previousPokemon.sprites.front_default"
   /></a>
 
-  }
-  <a class="current" [routerLink]="['/pokemon', pokemonId]"
-    ><img class="sprite" [src]="pokemonVarieties[0].sprites.front_default"
-  /></a>
-  @if (pokemonId + 1 < 1026) {<a
+  } @if (pokemonVarieties.length){<a
+    class="current"
+    [routerLink]="['/pokemon', pokemonId]"
+    ><img class="sprite" [src]="pokemonVarieties[0].sprites.front_default" /></a
+  >} @if (nextPokemon) {<a
     class="next"
     [routerLink]="['/pokemon', nextPokemon.id]"
     ><img class="sprite" [src]="nextPokemon.sprites.front_default" /></a
   >}
 </div>
+
+@if (pokemonVarieties.length > 1 && selectedForm) {
+<div class="form-selector">
+  <label for="formSelect">Choose Form:</label>
+  <select id="formSelect" (change)="onFormChange($event)">
+    @for (variety of pokemonVarieties; track variety) {
+    <option
+      [value]="variety.name"
+      [selected]="variety.name === selectedForm?.name"
+    >
+      {{ formatFormName(variety.name) | titlecase }}
+    </option>
+    }
+  </select>
+</div>
+
+<div class="box">
+  <h1>#{{ pokemonId }}</h1>
+  <h1>{{ pokemonVarieties[0].species.name | titlecase }}</h1>
+
+  <img
+    [src]="selectedForm.sprites.other['official-artwork'].front_default"
+    alt="{{ selectedForm.name }}"
+  />
+
+  <div class="type">
+    <img
+      *ngFor="let type of selectedForm.types"
+      [src]="getTypeSprite(type.type.name)"
+      [alt]="type.type.name"
+    />
+  </div>
+</div>
+<div>
+  Abilities: @for (ability of selectedForm.abilities; track ability) {
+  {{ ability.ability.name }} }
+</div>
+<div>Height: {{ convertHeight(selectedForm.height) }}</div>
+<div>Weight: {{ convertWeight(selectedForm.weight) }}</div>
+
+@if (availableVersions.length > 1) {<select [(ngModel)]="selectedVersion">
+  <option *ngFor="let version of availableVersions" [value]="version">
+    {{ version | titlecase }}
+  </option></select
+>} @if (getVersionedSpriteUrl().front_default){<img
+  [src]="getVersionedSpriteUrl().front_default"
+  [alt]="selectedForm.name"
+/>} } @else if (pokemonVarieties.length) {
 <div class="box">
   <h1>#{{ pokemonId }}</h1>
   <h1>{{ pokemonVarieties[0].species.name | titlecase }}</h1>
@@ -24,9 +72,7 @@
     alt="pokemon"
   />
   }
-
   <div class="type">
-    HH
     <img
       *ngFor="let type of pokemonVarieties[0].types"
       [src]="getTypeSprite(type.type.name)"
@@ -34,10 +80,22 @@
     />
   </div>
 </div>
-<p>coucou {{ latestCry }}</p>
-<audio key="latestCry" controls>
-  <source [src]="latestCry" type="audio/ogg" />
-</audio>
-<audio controls>
-  <source [src]="legacyCry" type="audio/ogg" />
-</audio>
+@if(selectedForm){
+<div>
+  Abilities: @for (ability of selectedForm.abilities; track ability) {
+  {{ ability.ability.name }} }
+</div>
+
+<div>Height: {{ convertHeight(selectedForm.height) }}</div>
+<div>Weight: {{ convertWeight(selectedForm.weight) }}</div>
+@if (availableVersions.length > 1) {<select [(ngModel)]="selectedVersion">
+  <option *ngFor="let version of availableVersions" [value]="version">
+    {{ version | titlecase }}
+  </option></select
+>} @if (getVersionedSpriteUrl().front_default){<img
+  [src]="getVersionedSpriteUrl().front_default"
+  [alt]="selectedForm.name"
+/>} } }@if (latestCry ){
+<audio controls [src]="latestCry"></audio>
+} @if (legacyCry) {
+<audio controls [src]="legacyCry"></audio>}

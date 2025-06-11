@@ -7,12 +7,12 @@ mat-paginator {
   display: grid;
   padding: 20px;
   gap: 16px;
-  grid-template-columns: repeat(auto-fit, minmax(16%, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(14%, 1fr));
 }
 
 .pokemon-list .box {
   width: 100%;
-  height: 800px;
+  height: 100%;
   box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.3);
   display: flex;
   flex-direction: column;
@@ -39,4 +39,5 @@ mat-paginator {
 div h1 {
   margin-left: 10px;
   font-family: Arial;
+  font-size: 100%;
 }
