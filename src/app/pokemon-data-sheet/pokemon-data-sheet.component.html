@@ -2,16 +2,22 @@
   @if (previousPokemon) {<a
     class="previous"
     [routerLink]="['/pokemon', previousPokemon.id]"
+    [queryParams]="{ lang: selectedLanguage }"
+    queryParamsHandling="merge"
     ><img class="sprite" [src]="previousPokemon.sprites.front_default"
   /></a>
 
   } @if (pokemonVarieties.length){<a
     class="current"
     [routerLink]="['/pokemon', pokemonId]"
+    [queryParams]="{ lang: selectedLanguage }"
+    queryParamsHandling="merge"
     ><img class="sprite" [src]="pokemonVarieties[0].sprites.front_default" /></a
   >} @if (nextPokemon) {<a
     class="next"
     [routerLink]="['/pokemon', nextPokemon.id]"
+    [queryParams]="{ lang: selectedLanguage }"
+    queryParamsHandling="merge"
     ><img class="sprite" [src]="nextPokemon.sprites.front_default" /></a
   >}
 </div>
@@ -33,7 +39,7 @@
 
 <div class="box">
   <h1>#{{ pokemonId }}</h1>
-  <h1>{{ pokemonVarieties[0].species.name | titlecase }}</h1>
+  <h1>{{ translatedName | titlecase }}</h1>
 
   <img
     [src]="selectedForm.sprites.other['official-artwork'].front_default"
@@ -48,12 +54,22 @@
     />
   </div>
 </div>
-<div>
-  Abilities: @for (ability of selectedForm.abilities; track ability) {
-  {{ ability.ability.name }} }
+<ul>
+  @for (ability of translatedAbilites; track ability.names) {
+  <li>
+    {{ getAbilityName(ability) }}
+    @if (ability.is_hidden) {
+    <span>(Hidden)</span>
+    }
+  </li>
+  }
+</ul>
+<div>{{ convertHeight(selectedForm.height) }}</div>
+<div>{{ convertWeight(selectedForm.weight) }}</div>
+
+<div class="flavor-text">
+  <p>{{ getFlavorText() }}</p>
 </div>
-<div>Height: {{ convertHeight(selectedForm.height) }}</div>
-<div>Weight: {{ convertWeight(selectedForm.weight) }}</div>
 
 @if (availableVersions.length > 1) {<select [(ngModel)]="selectedVersion">
   <option *ngFor="let version of availableVersions" [value]="version">
@@ -65,7 +81,7 @@
 />} } @else if (pokemonVarieties.length) {
 <div class="box">
   <h1>#{{ pokemonId }}</h1>
-  <h1>{{ pokemonVarieties[0].species.name | titlecase }}</h1>
+  <h1>{{ translatedName | titlecase }}</h1>
   @for (variety of pokemonVarieties; track variety) {
   <img
     [src]="variety.sprites.other['official-artwork'].front_default"
@@ -81,13 +97,24 @@
   </div>
 </div>
 @if(selectedForm){
-<div>
-  Abilities: @for (ability of selectedForm.abilities; track ability) {
-  {{ ability.ability.name }} }
-</div>
+<ul>
+  @for (ability of translatedAbilites; track ability.names) {
+  <li>
+    {{ getAbilityName(ability) }}
+    @if (ability.is_hidden) {
+    <span>(Hidden)</span>
+    }
+  </li>
+  }
+</ul>
+>
 
-<div>Height: {{ convertHeight(selectedForm.height) }}</div>
-<div>Weight: {{ convertWeight(selectedForm.weight) }}</div>
+<div>{{ convertHeight(selectedForm.height) }}</div>
+<div>{{ convertWeight(selectedForm.weight) }}</div>
+
+<div class="flavor-text">
+  <p>{{ getFlavorText() }}</p>
+</div>
 @if (availableVersions.length > 1) {<select [(ngModel)]="selectedVersion">
   <option *ngFor="let version of availableVersions" [value]="version">
     {{ version | titlecase }}

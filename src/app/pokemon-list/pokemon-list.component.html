@@ -11,7 +11,9 @@
 <div class="pokemon-list">
   <div class="box" *ngFor="let pokemon of pokemons">
     <h1>#{{ pokemon.id }}</h1>
-    <a [routerLink]="['/pokemon', pokemon.id]"
+    <a
+      [queryParams]="{ lang: selectedLanguage }"
+      [routerLink]="['/pokemon', pokemon.id]"
       ><img
         [src]="pokemon.sprites.other['official-artwork'].front_default"
         alt="pokemon"

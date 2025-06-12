@@ -1,6 +1,18 @@
 <div class="header">
-  <a class="active" routerLink="/">Home</a>
-  <a class="active" routerLink="/pokemons">List</a>
+  <a
+    class="active"
+    [queryParams]="{ lang: selectedLanguage }"
+    routerLink="/"
+    queryParamsHandling="merge"
+    >Home</a
+  >
+  <a
+    class="active"
+    [queryParams]="{ lang: selectedLanguage }"
+    routerLink="/pokemons"
+    queryParamsHandling="merge"
+    >List</a
+  >
   <div class="search">
     <input
       class="search-input"
@@ -8,4 +20,9 @@
       placeholder="Search Pokemons by name"
     />
   </div>
+
+  <select [value]="selectedLanguage" (change)="onLanguageChange($event)">
+    <option value="en" selected>English</option>
+    <option value="fr">French</option>
+  </select>
 </div>

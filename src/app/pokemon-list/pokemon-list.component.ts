@@ -17,6 +17,7 @@ export class PokemonListComponent implements OnInit {
   currentPage = 0;
   limit = 0;
   offset = 0;
+  selectedLanguage: string = 'en';
 
   constructor(
     private http: HttpClient,
@@ -57,13 +58,16 @@ export class PokemonListComponent implements OnInit {
           this.http.get(speciesData.varieties[0].pokemon.url)
         );
         return {
-          species_name: species.name,
+          species_name: speciesData.names.find(
+            (n: any) => n.language.name === this.selectedLanguage
+          ).name,
           ...detailedPokemon,
         };
       }
     );
     this.types = await Promise.all(typePromises);
     this.pokemons = await Promise.all(pokemonPromises);
+    console.log(this.pokemons);
   }
 
   getPokemonData(url: string) {
@@ -92,6 +96,7 @@ export class PokemonListComponent implements OnInit {
       queryParams: {
         limit: this.limit,
         page: this.currentPage,
+        lang: this.selectedLanguage,
       },
     });
 
@@ -104,6 +109,7 @@ export class PokemonListComponent implements OnInit {
       this.limit = +params['limit'] || 12;
       this.currentPage = +params['page'] || 0;
       this.offset = this.currentPage * this.limit;
+      this.selectedLanguage = params['lang'] || 'en';
       await this.getPokemonInfo(this.limit, this.offset);
     });
   }
