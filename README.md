@@ -2,6 +2,8 @@
 
 A Pokémon browser application built with Angular that allows users to explore the world of Pokémon using the PokéAPI.
 
+To see the live version, go there: https://rubiksel.github.io/aksel-poke-dex-explorer/
+
 ## Project Overview
 
 This Angular application serves as a training project for interns to learn and apply core Angular concepts. The PokéDex Explorer will allow users to:
