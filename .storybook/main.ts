@@ -7,6 +7,7 @@ const config: StorybookConfig = {
     name: "@storybook/angular",
     options: {},
   },
+  staticDirs: ["../public"],
   webpackFinal: async (config) => {
     config.module?.rules?.push({
       test: /\.css$/i,
