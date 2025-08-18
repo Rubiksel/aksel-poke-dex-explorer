@@ -16,9 +16,7 @@
             "outputPath": "dist/aksel-poke-dex-explorer",
             "index": "src/index.html",
             "browser": "src/main.ts",
-            "polyfills": [
-              "zone.js"
-            ],
+            "polyfills": ["zone.js"],
             "tsConfig": "tsconfig.app.json",
             "assets": [
               {
@@ -75,10 +73,7 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "polyfills": [
-              "zone.js",
-              "zone.js/testing"
-            ],
+            "polyfills": ["zone.js", "zone.js/testing"],
             "tsConfig": "tsconfig.spec.json",
             "assets": [
               {
@@ -103,8 +98,10 @@
           "options": {
             "configDir": ".storybook",
             "browserTarget": "aksel-poke-dex-explorer:build",
-            "compodoc": true,
+            "compodoc": false,
             "compodocArgs": [
+              "-p",
+              "tsconfig.app.json",
               "-e",
               "json",
               "-d",
@@ -118,8 +115,10 @@
           "options": {
             "configDir": ".storybook",
             "browserTarget": "aksel-poke-dex-explorer:build",
-            "compodoc": true,
+            "compodoc": false,
             "compodocArgs": [
+              "-p",
+              "tsconfig.app.json",
               "-e",
               "json",
               "-d",
