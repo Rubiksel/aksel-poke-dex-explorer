@@ -2,9 +2,9 @@ import type { StorybookConfig } from "@storybook/angular";
 
 const config: StorybookConfig = {
   stories: ["../src/app/**/*.stories.@(js|jsx|mjs|ts|tsx)"],
-  addons: ["@storybook/addon-docs"],
+  addons: ["@storybook/addon-docs", "msw-storybook-addon"],
   framework: {
-    name: "@storybook/angular",
+      name: "@storybook/angular",
     options: {},
   },
   staticDirs: ["../public"],
@@ -12,7 +12,7 @@ const config: StorybookConfig = {
     config.module?.rules?.push({
       test: /\.css$/i,
       use: ["style-loader", "css-loader"],
-      include: /node_modules/,
+      include: [/node_modules/, /src/],
     });
     return config;
   },
