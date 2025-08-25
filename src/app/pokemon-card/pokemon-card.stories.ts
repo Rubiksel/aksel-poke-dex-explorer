@@ -3,7 +3,7 @@ import { applicationConfig } from "@storybook/angular";
 import { provideRouter } from "@angular/router";
 import { PokemonCardComponent } from "./pokemon-card.component";
 import type { Pokemon, PokemonSpecies } from "../_core/models/pokemon";
-import { userEvent, within, expect } from "storybook/test";
+import { userEvent, within, expect, fn } from "storybook/test";
 
 type DeepPartial<T> = {
   [K in keyof T]?: T[K] extends object ? DeepPartial<T[K]> : T[K];
@@ -118,15 +118,20 @@ export const MultiForm: StoryObj<PokemonCardComponent> = {
   args: {
     ...Default.args,
     pokemonSpecies: pikachuSpeciesMulti,
+    formSelected: fn(),
   },
-  play: async ({ canvasElement, step }) => {
+  play: async ({ canvasElement, args }) => {
     const canvas = within(canvasElement);
 
     const select = canvas.getByRole("combobox");
+
     await userEvent.selectOptions(select, "pikachu-gmax");
-    expect(select).toHaveValue("pikachu-gmax");
+    await expect(select).toHaveValue("pikachu-gmax");
+    await expect(args.formSelected).toHaveBeenCalledWith("pikachu-gmax");
+
     await userEvent.selectOptions(select, "pikachu-rock-star");
-    expect(select).toHaveValue("pikachu-rock-star");
+    await expect(select).toHaveValue("pikachu-rock-star");
+    await expect(args.formSelected).toHaveBeenCalledWith("pikachu-rock-star");
   },
 };
 
